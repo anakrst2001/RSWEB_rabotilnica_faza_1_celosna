@@ -1,0 +1,94 @@
+﻿@model MVCBook.Models.Book
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Book</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.YearPublished)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.YearPublished)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumPages)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumPages)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FrontPage)
+        </dt>
+        <dd class = "col-sm-10">
+            <img src="~/images/@Model.FrontPage" height="480" width="320">
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DownloadUrl)
+        </dt>
+        <dd class="col-sm-10">
+            <form asp-controller="Books" asp-action="DownloadFile">
+                <input name="Url" value="@Model.DownloadUrl" />
+                <input type="submit" value="Download pdf"
+            </form>
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class = "col-sm-10">
+            @if (Model.AuthorId != null)
+            {
+                <a asp-controller="Authors" asp-action="Details" asp-route-id="@Model.AuthorId">@Html.DisplayFor(model => model.Author.FullName)</a>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Genres)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var genre in Model.Genres)
+            {
+                <a asp-controller="Genres" asp-action="Details" asp-route-id="@genre.GenreId">
+                    @genre.Genre.GenreName
+                </a> <br />
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Average rating
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var averageRating = Model.Reviews?.Count > 0 ? Model.Reviews.Average(r => r.Rating) : 0;
+                <td>
+                    @averageRating
+                </td>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
